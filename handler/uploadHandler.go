@@ -44,10 +44,10 @@ func UploadHandler(w http.ResponseWriter,r* http.Request){
 		return
 	}
 
-	fmt.Fprintf(w,"File Uploaded Successfully!\n")
+
 	transcodeToHLS(osFile.Name())
-	fmt.Fprintf(w,"File Transcoded Successfully!")
-	http.Redirect(w,r,"/home",http.StatusMovedPermanently)
+	http.Redirect(w,r,"/",http.StatusSeeOther)
+	
 	return 
 }
 
