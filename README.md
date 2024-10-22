@@ -4,4 +4,4 @@
 - ✅ - transcoding videos
 - ✅ - concurrent transcoding
 - ❌ - use ffmpeg libraries for idiomatic code
-- ❌ - improve ui
+- ✅ - improve ui
