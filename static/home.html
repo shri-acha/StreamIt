@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video List</title>
+    <link href="/static/output.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Available Videos</h1>
-    <ul>
-        {{range .VideoData}}
-            <li><a href="/watch?v={{.}}">{{.}}</a></li>
-        {{else}}
-            <li>No videos found</li>
-        {{end}}
-    </ul>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center">
+    <div class="w-full max-w-3xl p-6">
+        <h1 class="text-4xl font-extrabold mb-8 text-center text-indigo-400 border-b-2 border-indigo-500 pb-2">
+            Available Videos
+        </h1>
+        <ul class="space-y-4">
+            {{range .VideoData}}
+                <li>
+                    <a href="/watch?v={{.}}" class="block px-4 py-2 bg-gray-800 rounded-lg text-indigo-300 hover:bg-indigo-500 hover:text-gray-900 transition-colors">
+                        {{.}}
+                    </a>
+                </li>
+            {{else}}
+                <li class="text-center text-gray-500">No videos found</li>
+            {{end}}
+        </ul>
+    </div>
 </body>
 </html>

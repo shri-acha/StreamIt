@@ -43,9 +43,15 @@ func UploadHandler(w http.ResponseWriter,r* http.Request){
 		http.Error(w,"Error Copying File!",404)
 		return
 	}
+	go func() {
+		err := transcodeToHLS(osFile.Name())
+		if err != nil {
+			log.Println("Error in transcoding:", err)
+		} else {
+			log.Println("File transcoded successfully:")
+		}
+	}()
 
-
-	transcodeToHLS(osFile.Name())
 	http.Redirect(w,r,"/",http.StatusSeeOther)
 	
 	return 

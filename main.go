@@ -13,8 +13,9 @@ func main() {
 	http.Handle("/videos/", http.StripPrefix("/videos/", http.FileServer(http.Dir("./uploads"))))
 
 	// Serve static files (including index.html)
-	// fs := http.FileServer(http.Dir("./static/"))
-
+	fs := http.FileServer(http.Dir("./static"))
+	
+	http.Handle("/static/",http.StripPrefix("/static/",fs))
 
 	http.HandleFunc("/upload",handler.UploadPageHandler)	
 	
