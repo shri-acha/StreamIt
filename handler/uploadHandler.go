@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+
 func UploadHandler(w http.ResponseWriter,r* http.Request){
 	if r.Method != http.MethodPost {
 		http.Error(w,"Method Not Allowed!",http.StatusMethodNotAllowed)
@@ -29,6 +30,14 @@ func UploadHandler(w http.ResponseWriter,r* http.Request){
 	}
 
 	defer f.Close()
+	
+	fileType := strings.Split(handler.Filename, ".")[1]
+	
+	if !validateFileType(fileType){
+		http.Error(w,"Wrong Filetype!",http.StatusUnsupportedMediaType)
+		return
+	}
+
 
 	osFile,err := os.Create("./uploads/"+handler.Filename)	
 		
@@ -38,7 +47,8 @@ func UploadHandler(w http.ResponseWriter,r* http.Request){
 	}
 	defer osFile.Close()
 	_,err = io.Copy(osFile,f)
-
+	
+		
 	if err != nil{
 		http.Error(w,"Error Copying File!",404)
 		return
@@ -84,4 +94,16 @@ func transcodeToHLS(inputFile string) error {
         return fmt.Errorf("ffmpeg error: %v, output: %s", err, string(output))
     }
     return nil
+}
+
+func validateFileType(fileType string) bool{
+
+	fileTypes := []string{"mkv","mp4"}
+	
+	for _,f := range fileTypes{
+		if f==fileType {
+			return true
+		}
+	}
+	return false
 }
