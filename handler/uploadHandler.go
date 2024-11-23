@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
+	"github.com/u2takey/ffmpeg-go"
 	"path/filepath"
 	"strings"
 )
@@ -79,19 +79,27 @@ func transcodeToHLS(inputFile string) error {
 
 	log.Println(inputFileDirectory[1])
 	log.Println(outputFile)
-		cmd := exec.Command("ffmpeg",
-		      "-i", inputFile,
-		      "-profile:v", "baseline",
-		      "-level", "3.0",
-		      "-start_number", "0",
-		      "-hls_time", "10",
-		      "-hls_list_size", "0",
-		      "-f", "hls",
-		      "."+outputFile)
+		// cmd := exec.Command("ffmpeg",
+		//       "-i", inputFile,
+		//       "-profile:v", "baseline",
+		//       "-level", "3.0",
+		//       "-start_number", "0",
+		//       "-hls_time", "10",
+		//       "-hls_list_size", "0",
+		//       "-f", "hls",
+		//       "."+outputFile)
+		//
+		//   output, err := cmd.CombinedOutput()
+		err = ffmpeg_go.Input(inputFile).
+						Output("."+outputFile,
+						ffmpeg_go.KwArgs{"profile:v":"baseline",
+						"level":"3.0","start_number":"0",
+						"hls_time":"10","hls_list_size":"0","f":"hls",
+					}).Run();	
 
-		  output, err := cmd.CombinedOutput()
+
     if err != nil {
-        return fmt.Errorf("ffmpeg error: %v, output: %s", err, string(output))
+        return fmt.Errorf("ffmpeg error: %v", err)
     }
     return nil
 }
